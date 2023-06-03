@@ -1,4 +1,12 @@
-# Introduction
+## Version history
+### 1.1-SNAPSHOT
+* Migrate build to Gradle. While Maven build is fine, Gradle provides modern features and better readability.
+
+### 1.0-SNAPSHOT
+Initial version
+
+
+# Original instructions (Introduction)
 
 This is a poorly written application, and we're expecting the candidate to greatly improve this code base.
 
