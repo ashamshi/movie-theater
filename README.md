@@ -1,4 +1,7 @@
 ## Version history
+### 1.2-SNAPSHOT
+* Configure Jacoco Gradle plugin to measure unit test coverage. Current total coverage is 68%.
+
 ### 1.1-SNAPSHOT
 * Migrate build to Gradle. While Maven build is fine, Gradle provides modern features and better readability.
 
