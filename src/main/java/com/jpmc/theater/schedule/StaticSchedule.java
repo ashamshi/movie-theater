@@ -1,7 +1,7 @@
 package com.jpmc.theater.schedule;
 
-import com.jpmc.theater.Movie;
-import com.jpmc.theater.Showing;
+import com.jpmc.theater.model.Movie;
+import com.jpmc.theater.model.Showing;
 
 import java.time.Duration;
 import java.time.LocalDate;

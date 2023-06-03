@@ -16,7 +16,7 @@ class StaticScheduleTest {
     Schedule schedule = new StaticSchedule(() -> date);
     // Then
     assertFalse(schedule.getShowings().isEmpty());
-    schedule.getShowings().forEach(showing -> assertEquals(date, showing.getStartTime().toLocalDate()));
+    schedule.getShowings().forEach(showing -> assertEquals(date, showing.getShowStartTime().toLocalDate()));
     assertEquals(date, schedule.getDate());
   }
 }

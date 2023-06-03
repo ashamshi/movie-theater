@@ -1,26 +1,70 @@
 package com.jpmc.theater;
 
+import com.jpmc.theater.model.Customer;
+import com.jpmc.theater.model.Reservation;
+import com.jpmc.theater.model.Showing;
 import com.jpmc.theater.schedule.Schedule;
 import com.jpmc.theater.schedule.StaticSchedule;
+import com.jpmc.theater.service.ReservationService;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TheaterTests {
+    ReservationService reservationService = new ReservationService();
+
     @Test
-    void totalFeeForCustomer() {
+    void shouldCreateReservationAndCalculateTotalFeeForCustomer() {
         // Given
         Schedule schedule = new StaticSchedule(LocalDate::now);
-        Theater theater = new Theater(schedule);
+        Theater theater = new Theater(schedule, reservationService);
         Customer john = new Customer("John Doe", "id-12345");
         // When
         Reservation reservation = theater.reserve(john, 2, 4);
         // Then
-        assertEquals(reservation.totalFee(), 50);
+        assertEquals(reservation.getTotalFee(), 50);
+    }
+
+    @Test
+    void shouldThrowIllegalArgumentExceptionWhenSequenceIsBiggerThanScheduledItemsNumber() {
+        // Given
+        Schedule emptySchedule = new Schedule() {
+            @Override
+            public List<Showing> getShowings() {
+                return Collections.emptyList();
+            }
+
+            @Override
+            public LocalDate getDate() {
+                return LocalDate.now();
+            }
+        };
+        Theater theater = new Theater(emptySchedule, reservationService);
+        Customer john = new Customer("John Doe", "id-12345");
+        // When & Then
+        Exception thrown = assertThrows(
+          IllegalArgumentException.class,
+          () -> theater.reserve(john, 1, 4));
+        assertEquals("not able to find any showing for given sequence 1", thrown.getMessage());
+    }
+
+    @Test
+    void shouldThrowIllegalArgumentExceptionWhenSequenceIsLessThanOne() {
+        Schedule schedule = new StaticSchedule(LocalDate::now);
+        Theater theater = new Theater(schedule, reservationService);
+        Customer john = new Customer("John Doe", "id-12345");
+        // When & Then
+        Exception thrown = assertThrows(
+          IllegalArgumentException.class,
+          () -> theater.reserve(john, 0, 4));
+        assertEquals("not able to find any showing for given sequence 0", thrown.getMessage());
     }
 
     @Test
@@ -28,7 +72,7 @@ public class TheaterTests {
         // Given
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Schedule schedule = new StaticSchedule(() -> LocalDate.of(2023, 6, 3));
-        Theater theater = new Theater(schedule, new PrintStream(outputStream));
+        Theater theater = new Theater(schedule, reservationService, new PrintStream(outputStream));
         // When
         theater.printSchedule();
         // Then

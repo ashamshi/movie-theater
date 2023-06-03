@@ -1,4 +1,13 @@
 ## Version history
+### 1.5-SNAPSHOT
+* Introduce `Service` classes
+* Move business logic from `Model` classes to `Service` classes
+* Move `Model` classes to own package
+* Employ `lombok` dependency to minify `Model` classes declaration 
+* Add  unit tests to `Model` classes
+* Improve exception handling in `Theater::reserve` and add unit tests for the exceptional cases
+* Increase unit test code coverage up to 95%
+
 ### 1.4-SNAPSHOT
 * Introduce `Schedule` interface to logically combine scheduled showings with schedule date.
 * Introduce `StaticSchedule` class to abstract `Theater` class from in-place data.
