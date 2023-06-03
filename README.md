@@ -1,7 +1,12 @@
 ## Version history
+### 1.4-SNAPSHOT
+* Introduce `Schedule` interface to logically combine scheduled showings with schedule date.
+* Introduce `StaticSchedule` class to abstract `Theater` class from in-place data.
+* Call `LocalDateProvider::get` only once in `StaticSchedule` to ensure consistent date value across showings and schedule date.   
+
 ### 1.3-SNAPSHOT
 * Refactor `Theater` class to improve dependency injection.
-* Provide `PrintStream` dependency to `Theater` class in order to capture output
+* Provide `PrintStream` dependency to `Theater` class in order to capture output.
 * Update `TheaterTests`, replace `printMovieSchedule()` that did just output with `shouldPrintMovieScheduleStaticData()` which now compares captured output with the expected data.
 * Change `LocalDateProvider` to extend `Supplier<LocalDate>` and avoid Singleton since Singleton injection is harder to unit test.
 

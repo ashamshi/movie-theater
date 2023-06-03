@@ -1,5 +1,7 @@
 package com.jpmc.theater;
 
+import com.jpmc.theater.schedule.Schedule;
+import com.jpmc.theater.schedule.StaticSchedule;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -11,10 +13,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TheaterTests {
     @Test
     void totalFeeForCustomer() {
-        Theater theater = new Theater(LocalDate::now);
+        // Given
+        Schedule schedule = new StaticSchedule(LocalDate::now);
+        Theater theater = new Theater(schedule);
         Customer john = new Customer("John Doe", "id-12345");
+        // When
         Reservation reservation = theater.reserve(john, 2, 4);
-//        System.out.println("You have to pay " + reservation.getTotalFee());
+        // Then
         assertEquals(reservation.totalFee(), 50);
     }
 
@@ -22,7 +27,8 @@ public class TheaterTests {
     void shouldPrintMovieScheduleStaticData() {
         // Given
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Theater theater = new Theater(() -> LocalDate.of(2023, 6, 3), new PrintStream(outputStream));
+        Schedule schedule = new StaticSchedule(() -> LocalDate.of(2023, 6, 3));
+        Theater theater = new Theater(schedule, new PrintStream(outputStream));
         // When
         theater.printSchedule();
         // Then
