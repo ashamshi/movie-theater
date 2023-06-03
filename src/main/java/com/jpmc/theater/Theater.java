@@ -6,28 +6,21 @@ import com.jpmc.theater.model.Showing;
 import com.jpmc.theater.schedule.Schedule;
 import com.jpmc.theater.schedule.StaticSchedule;
 import com.jpmc.theater.service.ReservationService;
+import com.jpmc.theater.service.print.PrintService;
+import com.jpmc.theater.service.print.SimpleTextPrintService;
+import com.jpmc.theater.service.print.format.DurationFormatter;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.io.PrintStream;
-import java.time.Duration;
 import java.time.LocalDate;
-import java.util.concurrent.TimeUnit;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@AllArgsConstructor
 public class Theater {
     Schedule schedule;
     ReservationService reservationService;
-    PrintStream out;
-
-    public Theater(Schedule schedule, ReservationService reservationService) {
-        this(schedule, reservationService, System.out);
-    }
-    public Theater(Schedule schedule, ReservationService reservationService, PrintStream out) {
-        this.schedule = schedule;
-        this.reservationService = reservationService;
-        this.out = out;
-    }
+    PrintService printService;
 
     public Reservation reserve(Customer customer, int sequence, int howManyTickets) {
         if (sequence < 1 || sequence > schedule.getShowings().size()) {
@@ -38,36 +31,15 @@ public class Theater {
     }
 
     public void printSchedule() {
-        out.println(schedule.getDate());
-        out.println("===================================================");
-        schedule.getShowings().forEach(s ->
-                out.println(s.getSequenceOfTheDay() + ": " + s.getShowStartTime() + " " + s.getMovie().getTitle() + " "
-                  + humanReadableFormat(s.getMovie().getRunningTime()) + " $" + s.getMovie().getTicketPrice())
-        );
-        out.println("===================================================");
-    }
-
-    public String humanReadableFormat(Duration duration) {
-        long hour = duration.toHours();
-        long remainingMin = duration.toMinutes() - TimeUnit.HOURS.toMinutes(duration.toHours());
-
-        return String.format("(%s hour%s %s minute%s)", hour, handlePlural(hour), remainingMin, handlePlural(remainingMin));
-    }
-
-    // (s) postfix should be added to handle plural correctly
-    private String handlePlural(long value) {
-        if (value == 1) {
-            return "";
-        }
-        else {
-            return "s";
-        }
+        printService.print(schedule);
     }
 
     public static void main(String[] args) {
         Schedule schedule = new StaticSchedule(LocalDate::now);
         ReservationService reservationService = new ReservationService();
-        Theater theater = new Theater(schedule, reservationService);
+        DurationFormatter durationFormatter = new DurationFormatter();
+        PrintService printService = new SimpleTextPrintService(durationFormatter, System.out);
+        Theater theater = new Theater(schedule, reservationService, printService);
         theater.printSchedule();
     }
 }

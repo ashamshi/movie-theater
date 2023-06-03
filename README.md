@@ -1,4 +1,9 @@
 ## Version history
+### 1.6-SNAPSHOT
+* Delegate printing to `PrintService`
+* Delegate duration formatting to `DurationFormatter`
+* Employ `mockito` for dependency mocking
+
 ### 1.5-SNAPSHOT
 * Introduce `Service` classes
 * Move business logic from `Model` classes to `Service` classes
