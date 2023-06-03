@@ -1,4 +1,10 @@
 ## Version history
+### 1.3-SNAPSHOT
+* Refactor `Theater` class to improve dependency injection.
+* Provide `PrintStream` dependency to `Theater` class in order to capture output
+* Update `TheaterTests`, replace `printMovieSchedule()` that did just output with `shouldPrintMovieScheduleStaticData()` which now compares captured output with the expected data.
+* Change `LocalDateProvider` to extend `Supplier<LocalDate>` and avoid Singleton since Singleton injection is harder to unit test.
+
 ### 1.2-SNAPSHOT
 * Configure Jacoco Gradle plugin to measure unit test coverage. Current total coverage is 68%.
 
