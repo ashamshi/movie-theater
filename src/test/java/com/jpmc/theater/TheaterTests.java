@@ -1,10 +1,10 @@
 package com.jpmc.theater;
 
+import com.jpmc.theater.configuration.ScheduleConfiguration;
 import com.jpmc.theater.model.Customer;
 import com.jpmc.theater.model.Reservation;
+import com.jpmc.theater.model.Schedule;
 import com.jpmc.theater.model.Showing;
-import com.jpmc.theater.schedule.Schedule;
-import com.jpmc.theater.schedule.StaticSchedule;
 import com.jpmc.theater.service.ReservationService;
 import com.jpmc.theater.service.print.PrintService;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.Collections;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -32,7 +31,7 @@ public class TheaterTests {
     @Mock
     ReservationService reservationService;
     @Spy
-    Schedule schedule = new StaticSchedule(LocalDate::now);
+    Schedule schedule = new ScheduleConfiguration().schedule();
     @InjectMocks
     Theater theater;
 
@@ -53,17 +52,7 @@ public class TheaterTests {
     @Test
     void shouldThrowIllegalArgumentExceptionWhenSequenceIsBiggerThanScheduledItemsNumber() {
         // Given
-        Schedule emptySchedule = new Schedule() {
-            @Override
-            public List<Showing> getShowings() {
-                return Collections.emptyList();
-            }
-
-            @Override
-            public LocalDate getDate() {
-                return LocalDate.now();
-            }
-        };
+        Schedule emptySchedule = new Schedule(LocalDate.now(), Collections.emptyList());
         Theater theater = new Theater(emptySchedule, reservationService, printService);
         Customer john = new Customer("John Doe", "id-12345");
         // When & Then

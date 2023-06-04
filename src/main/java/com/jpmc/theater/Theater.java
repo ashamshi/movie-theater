@@ -1,21 +1,15 @@
 package com.jpmc.theater;
 
-import com.jpmc.theater.configuration.DiscountConfiguration;
+import com.jpmc.theater.configuration.TheaterConfiguration;
 import com.jpmc.theater.model.Customer;
 import com.jpmc.theater.model.Reservation;
 import com.jpmc.theater.model.Showing;
-import com.jpmc.theater.schedule.Schedule;
-import com.jpmc.theater.schedule.StaticSchedule;
+import com.jpmc.theater.model.Schedule;
 import com.jpmc.theater.service.ReservationService;
-import com.jpmc.theater.service.discount.DiscountService;
 import com.jpmc.theater.service.print.PrintService;
-import com.jpmc.theater.service.print.SimpleTextPrintService;
-import com.jpmc.theater.service.print.format.DurationFormatter;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDate;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @AllArgsConstructor
@@ -37,12 +31,7 @@ public class Theater {
     }
 
     public static void main(String[] args) {
-        Schedule schedule = new StaticSchedule(LocalDate::now);
-        DiscountService discountService = new DiscountService(new DiscountConfiguration().discountRules());
-        ReservationService reservationService = new ReservationService(discountService);
-        DurationFormatter durationFormatter = new DurationFormatter();
-        PrintService printService = new SimpleTextPrintService(durationFormatter, System.out);
-        Theater theater = new Theater(schedule, reservationService, printService);
+        Theater theater = new TheaterConfiguration().theater();
         theater.printSchedule();
     }
 }

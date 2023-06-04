@@ -1,8 +1,6 @@
-package com.jpmc.theater.service.print;
+package com.jpmc.theater.configuration;
 
-import com.jpmc.theater.configuration.ScheduleConfiguration;
-import com.jpmc.theater.model.Schedule;
-import com.jpmc.theater.service.print.format.DurationFormatter;
+import com.jpmc.theater.Theater;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -11,17 +9,18 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SimpleTextPrintServiceTest {
-  DurationFormatter durationFormatter = new DurationFormatter();
+class TheaterConfigurationTest {
 
   @Test
-  void shouldPrintMovieScheduleStaticData() {
+  void shouldReturnTheater() {
     // Given
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    Schedule schedule = new ScheduleConfiguration(() -> LocalDate.of(2023, 6, 3)).schedule();
-    PrintService target = new SimpleTextPrintService(durationFormatter, new PrintStream(outputStream));
+    TheaterConfiguration theaterConfiguration = new TheaterConfiguration()
+      .withScheduleLocalDateProvider(() -> LocalDate.of(2023, 6, 3))
+      .withOutputStream(new PrintStream(outputStream));
     // When
-    target.print(schedule);
+    Theater theater = theaterConfiguration.theater();
+    theater.printSchedule();
     // Then
     assertEquals("2023-06-03\n" +
       "===================================================\n" +

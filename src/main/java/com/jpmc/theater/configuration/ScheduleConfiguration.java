@@ -1,7 +1,12 @@
-package com.jpmc.theater.schedule;
+package com.jpmc.theater.configuration;
 
 import com.jpmc.theater.model.Movie;
 import com.jpmc.theater.model.Showing;
+import com.jpmc.theater.model.Schedule;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -9,19 +14,22 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
-public class StaticSchedule implements Schedule {
-  private final LocalDate scheduleDate;
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@AllArgsConstructor
+@NoArgsConstructor
+public class ScheduleConfiguration {
+  LocalDateProvider localDateProvider = LocalDate::now;
 
-  public StaticSchedule(LocalDateProvider provider) {
-    this.scheduleDate = provider.get();
+  public ScheduleConfiguration withLocalDateProvider(LocalDateProvider localDateProvider) {
+    return new ScheduleConfiguration(localDateProvider);
   }
 
-  @Override
-  public List<Showing> getShowings() {
+  public Schedule schedule() {
     Movie spiderMan = new Movie("Spider-Man: No Way Home", Duration.ofMinutes(90), 12.5, 1);
     Movie turningRed = new Movie("Turning Red", Duration.ofMinutes(85), 11, 0);
     Movie theBatMan = new Movie("The Batman", Duration.ofMinutes(95), 9, 0);
-    return List.of(
+    LocalDate scheduleDate = localDateProvider.get();
+    return new Schedule(scheduleDate, List.of(
       new Showing(turningRed, 1, LocalDateTime.of(scheduleDate, LocalTime.of(9, 0))),
       new Showing(spiderMan, 2, LocalDateTime.of(scheduleDate, LocalTime.of(11, 0))),
       new Showing(theBatMan, 3, LocalDateTime.of(scheduleDate, LocalTime.of(12, 50))),
@@ -31,11 +39,6 @@ public class StaticSchedule implements Schedule {
       new Showing(turningRed, 7, LocalDateTime.of(scheduleDate, LocalTime.of(19, 30))),
       new Showing(spiderMan, 8, LocalDateTime.of(scheduleDate, LocalTime.of(21, 10))),
       new Showing(theBatMan, 9, LocalDateTime.of(scheduleDate, LocalTime.of(23, 0)))
-    );
-  }
-
-  @Override
-  public LocalDate getDate() {
-    return scheduleDate;
+    ));
   }
 }

@@ -1,4 +1,8 @@
 ## Version history
+### 1.8-SNAPSHOT
+* Add Theater configuration
+* Increase unit test code coverage up to 97% (instructions), 83% (branches)
+
 ### 1.7-SNAPSHOT
 * Add classes for Discount rules
 * Apply discounts during reservation

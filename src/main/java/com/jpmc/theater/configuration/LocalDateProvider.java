@@ -1,4 +1,4 @@
-package com.jpmc.theater.schedule;
+package com.jpmc.theater.configuration;
 
 import java.time.LocalDate;
 import java.util.function.Supplier;

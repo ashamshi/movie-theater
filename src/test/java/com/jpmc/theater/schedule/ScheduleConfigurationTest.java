@@ -1,5 +1,7 @@
 package com.jpmc.theater.schedule;
 
+import com.jpmc.theater.configuration.ScheduleConfiguration;
+import com.jpmc.theater.model.Schedule;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -7,13 +9,15 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-class StaticScheduleTest {
+class ScheduleConfigurationTest {
 
   @Test
   void shouldGetShowingsStartTimeAndDateSetFromLocalDateProvider() {
-    // Given & When
+    // Given
     LocalDate date = LocalDate.of(2023, 6, 3);
-    Schedule schedule = new StaticSchedule(() -> date);
+    ScheduleConfiguration scheduleConfiguration = new ScheduleConfiguration(() -> date);
+    // When
+    Schedule schedule = scheduleConfiguration.schedule();
     // Then
     assertFalse(schedule.getShowings().isEmpty());
     schedule.getShowings().forEach(showing -> assertEquals(date, showing.getShowStartTime().toLocalDate()));

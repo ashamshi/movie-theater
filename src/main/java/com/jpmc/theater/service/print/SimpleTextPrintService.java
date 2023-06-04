@@ -1,6 +1,6 @@
 package com.jpmc.theater.service.print;
 
-import com.jpmc.theater.schedule.Schedule;
+import com.jpmc.theater.model.Schedule;
 import com.jpmc.theater.service.print.format.DurationFormatter;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
