@@ -19,15 +19,18 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
 @ExtendWith(MockitoExtension.class)
 public class TheaterTests {
     @Mock
     PrintService printService;
-    @Spy
-    ReservationService reservationService = new ReservationService();
+    @Mock
+    ReservationService reservationService;
     @Spy
     Schedule schedule = new StaticSchedule(LocalDate::now);
     @InjectMocks
@@ -37,10 +40,14 @@ public class TheaterTests {
     void shouldCreateReservationAndCalculateTotalFeeForCustomer() {
         // Given
         Customer john = new Customer("John Doe", "id-12345");
+        Showing expectedShowing = schedule.getShowings().get(1);
+        Reservation expectedReservation = new Reservation(john, expectedShowing, 4, 50);
+        given(reservationService.createReservation(eq(john), eq(expectedShowing), eq(4)))
+          .willReturn(expectedReservation);
         // When
         Reservation reservation = theater.reserve(john, 2, 4);
         // Then
-        assertEquals(reservation.getTotalFee(), 50);
+        assertSame(expectedReservation, reservation);
     }
 
     @Test

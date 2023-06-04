@@ -1,4 +1,8 @@
 ## Version history
+### 1.7-SNAPSHOT
+* Add classes for Discount rules
+* Apply discounts during reservation
+
 ### 1.6-SNAPSHOT
 * Delegate printing to `PrintService`
 * Delegate duration formatting to `DurationFormatter`
