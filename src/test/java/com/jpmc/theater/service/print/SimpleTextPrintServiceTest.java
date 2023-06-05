@@ -25,15 +25,15 @@ class SimpleTextPrintServiceTest {
     // Then
     assertEquals("2023-06-03\n" +
       "===================================================\n" +
-      "1: 2023-06-03T09:00 Turning Red (1 hour 25 minutes) $11.0\n" +
+      "1: 2023-06-03T09:00 Turning Red (1 hour 25 minutes) $11\n" +
       "2: 2023-06-03T11:00 Spider-Man: No Way Home (1 hour 30 minutes) $12.5\n" +
-      "3: 2023-06-03T12:50 The Batman (1 hour 35 minutes) $9.0\n" +
-      "4: 2023-06-03T14:30 Turning Red (1 hour 25 minutes) $11.0\n" +
+      "3: 2023-06-03T12:50 The Batman (1 hour 35 minutes) $9\n" +
+      "4: 2023-06-03T14:30 Turning Red (1 hour 25 minutes) $11\n" +
       "5: 2023-06-03T16:10 Spider-Man: No Way Home (1 hour 30 minutes) $12.5\n" +
-      "6: 2023-06-03T17:50 The Batman (1 hour 35 minutes) $9.0\n" +
-      "7: 2023-06-03T19:30 Turning Red (1 hour 25 minutes) $11.0\n" +
+      "6: 2023-06-03T17:50 The Batman (1 hour 35 minutes) $9\n" +
+      "7: 2023-06-03T19:30 Turning Red (1 hour 25 minutes) $11\n" +
       "8: 2023-06-03T21:10 Spider-Man: No Way Home (1 hour 30 minutes) $12.5\n" +
-      "9: 2023-06-03T23:00 The Batman (1 hour 35 minutes) $9.0\n" +
+      "9: 2023-06-03T23:00 The Batman (1 hour 35 minutes) $9\n" +
       "===================================================\n", outputStream.toString());
   }
 }

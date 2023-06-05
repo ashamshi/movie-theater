@@ -16,5 +16,5 @@ public class Reservation {
     Customer customer;
     Showing showing;
     int audienceCount;
-    double totalFee;
+    Money totalFee;
 }

@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
+import static com.jpmc.theater.model.Money.usd;
+
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,9 +27,9 @@ public class ScheduleConfiguration {
   }
 
   public Schedule schedule() {
-    Movie spiderMan = new Movie("Spider-Man: No Way Home", Duration.ofMinutes(90), 12.5, 1);
-    Movie turningRed = new Movie("Turning Red", Duration.ofMinutes(85), 11, 0);
-    Movie theBatMan = new Movie("The Batman", Duration.ofMinutes(95), 9, 0);
+    Movie spiderMan = new Movie("Spider-Man: No Way Home", Duration.ofMinutes(90), usd(12.5), 1);
+    Movie turningRed = new Movie("Turning Red", Duration.ofMinutes(85), usd(11), 0);
+    Movie theBatMan = new Movie("The Batman", Duration.ofMinutes(95), usd(9), 0);
     LocalDate scheduleDate = localDateProvider.get();
     return new Schedule(scheduleDate, List.of(
       new Showing(turningRed, 1, LocalDateTime.of(scheduleDate, LocalTime.of(9, 0))),

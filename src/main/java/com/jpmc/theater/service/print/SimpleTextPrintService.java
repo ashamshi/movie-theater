@@ -20,7 +20,7 @@ public class SimpleTextPrintService implements PrintService {
     out.println("===================================================");
     schedule.getShowings().forEach(s ->
       out.println(s.getSequenceOfTheDay() + ": " + s.getShowStartTime() + " " + s.getMovie().getTitle() + " "
-        + durationFormatter.toHumanReadableFormat(s.getMovie().getRunningTime()) + " $" + s.getMovie().getTicketPrice())
+        + durationFormatter.toHumanReadableFormat(s.getMovie().getRunningTime()) + " " + s.getMovie().getTicketPrice())
     );
     out.println("===================================================");
   }

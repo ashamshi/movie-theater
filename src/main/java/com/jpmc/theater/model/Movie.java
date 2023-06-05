@@ -15,6 +15,6 @@ import java.time.Duration;
 public class Movie {
     String title;
     Duration runningTime;
-    double ticketPrice;
+    Money ticketPrice;
     int specialCode;
 }

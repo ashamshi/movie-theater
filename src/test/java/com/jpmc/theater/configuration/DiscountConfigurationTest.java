@@ -11,27 +11,28 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
+import static com.jpmc.theater.model.Money.usd;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DiscountConfigurationTest {
   List<DiscountRule> rules = new DiscountConfiguration().discountRules();
-  Movie spiderMan = new Movie("Spider-Man: No Way Home", Duration.ofMinutes(90), 12.5, 1);
+  Movie spiderMan = new Movie("Spider-Man: No Way Home", Duration.ofMinutes(90), usd(12.5), 1);
 
   @Test
   void shouldReturnDiscountAmountWhenSpecialCodeMatches() {
     // Given
     Showing showing = new Showing(spiderMan, 2, LocalDateTime.now());
     // When & Then
-    assertEquals(2.5, rules.get(0).apply(showing));
+    assertEquals(2.5, rules.get(0).apply(showing).getAmount().doubleValue());
   }
 
   @Test
   void shouldReturnDiscountAmountZeroWhenSpecialCodeDoesNotMatch() {
     // Given
-    Movie spiderMan = new Movie("Spider-Man: No Way Home", Duration.ofMinutes(90), 12.5, 0);
+    Movie spiderMan = new Movie("Spider-Man: No Way Home", Duration.ofMinutes(90), usd(12.5), 0);
     Showing showing = new Showing(spiderMan, 2, LocalDateTime.now());
     // When & Then
-    assertEquals(0, rules.get(0).apply(showing));
+    assertEquals(0, rules.get(0).apply(showing).getAmount().doubleValue());
   }
 
   @Test
@@ -39,7 +40,7 @@ class DiscountConfigurationTest {
     // Given
     Showing showing = new Showing(spiderMan, 1, LocalDateTime.now());
     // When & Then
-    assertEquals(3, rules.get(1).apply(showing));
+    assertEquals(3, rules.get(1).apply(showing).getAmount().doubleValue());
   }
 
   @Test
@@ -47,7 +48,7 @@ class DiscountConfigurationTest {
     // Given
     Showing showing = new Showing(spiderMan, 2, LocalDateTime.now());
     // When & Then
-    assertEquals(0, rules.get(1).apply(showing));
+    assertEquals(0, rules.get(1).apply(showing).getAmount().doubleValue());
   }
 
   @Test
@@ -55,7 +56,7 @@ class DiscountConfigurationTest {
     // Given
     Showing showing = new Showing(spiderMan, 2, LocalDateTime.now());
     // When & Then
-    assertEquals(2, rules.get(2).apply(showing));
+    assertEquals(2, rules.get(2).apply(showing).getAmount().doubleValue());
   }
 
   @Test
@@ -63,7 +64,7 @@ class DiscountConfigurationTest {
     // Given
     Showing showing = new Showing(spiderMan, 3, LocalDateTime.now());
     // When & Then
-    assertEquals(0, rules.get(2).apply(showing));
+    assertEquals(0, rules.get(2).apply(showing).getAmount().doubleValue());
   }
 
   @Test
@@ -72,7 +73,7 @@ class DiscountConfigurationTest {
     Showing showing = new Showing(spiderMan, 2, LocalDateTime.of(LocalDate.now(),
       LocalTime.of(11, 15, 0)));
     // When & Then
-    assertEquals(3.125, rules.get(3).apply(showing));
+    assertEquals(3.12, rules.get(3).apply(showing).getAmount().doubleValue());
   }
 
   @Test
@@ -81,7 +82,7 @@ class DiscountConfigurationTest {
     Showing showing = new Showing(spiderMan, 2, LocalDateTime.of(LocalDate.now(),
       LocalTime.of(10, 55, 0)));
     // When & Then
-    assertEquals(0, rules.get(3).apply(showing));
+    assertEquals(0, rules.get(3).apply(showing).getAmount().doubleValue());
   }
 
   @Test
@@ -90,7 +91,7 @@ class DiscountConfigurationTest {
     Showing showing = new Showing(spiderMan, 2, LocalDateTime.of(LocalDate.now(),
       LocalTime.of(16, 15, 0)));
     // When & Then
-    assertEquals(0, rules.get(3).apply(showing));
+    assertEquals(0, rules.get(3).apply(showing).getAmount().doubleValue());
   }
 
   @Test
@@ -99,7 +100,7 @@ class DiscountConfigurationTest {
     Showing showing = new Showing(spiderMan, 2, LocalDateTime.of(LocalDate.of(2023, 6, 7),
       LocalTime.now()));
     // When & Then
-    assertEquals(1, rules.get(4).apply(showing));
+    assertEquals(1, rules.get(4).apply(showing).getAmount().doubleValue());
   }
 
   @Test
@@ -108,6 +109,6 @@ class DiscountConfigurationTest {
     Showing showing = new Showing(spiderMan, 2, LocalDateTime.of(LocalDate.of(2023, 6, 6),
       LocalTime.now()));
     // When & Then
-    assertEquals(0, rules.get(4).apply(showing));
+    assertEquals(0, rules.get(4).apply(showing).getAmount().doubleValue());
   }
 }

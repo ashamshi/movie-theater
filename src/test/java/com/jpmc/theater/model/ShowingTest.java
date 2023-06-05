@@ -5,11 +5,12 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import static com.jpmc.theater.model.Money.usd;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ShowingTest {
   LocalDateTime localDateTime = LocalDateTime.now();
-  Movie movie = new Movie("Spider-Man: No Way Home", Duration.ofMinutes(90), 12.5, 1);
+  Movie movie = new Movie("Spider-Man: No Way Home", Duration.ofMinutes(90), usd(12.5), 1);
   Showing target = new Showing(movie,1, localDateTime);
   @Test
   void shouldBeEqualWhenObjectsEqual() {

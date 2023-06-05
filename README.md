@@ -1,4 +1,8 @@
 ## Version history
+### 1.11-SNAPSHOT
+* Introduced `Money` type to replace `double` for money operations and avoid potential issues with loss of precision and currency
+* Unit test code coverage is 95% (instructions), 77% (branches)
+
 ### 1.10-SNAPSHOT
 * New requirement: new discount rules
 

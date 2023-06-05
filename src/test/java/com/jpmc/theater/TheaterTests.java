@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.util.Collections;
 
+import static com.jpmc.theater.model.Money.usd;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -40,7 +41,7 @@ public class TheaterTests {
         // Given
         Customer john = new Customer("John Doe", "id-12345");
         Showing expectedShowing = schedule.getShowings().get(1);
-        Reservation expectedReservation = new Reservation(john, expectedShowing, 4, 50);
+        Reservation expectedReservation = new Reservation(john, expectedShowing, 4, usd(50));
         given(reservationService.createReservation(eq(john), eq(expectedShowing), eq(4)))
           .willReturn(expectedReservation);
         // When

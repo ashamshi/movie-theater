@@ -1,11 +1,11 @@
 package com.jpmc.theater.service;
 
 import com.jpmc.theater.model.Customer;
+import com.jpmc.theater.model.Money;
 import com.jpmc.theater.model.Movie;
 import com.jpmc.theater.model.Reservation;
 import com.jpmc.theater.model.Showing;
 import com.jpmc.theater.service.discount.DiscountService;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +16,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static com.jpmc.theater.model.Money.usd;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -28,7 +29,7 @@ class ReservationServiceTest {
   ReservationService reservationService;
 
   Showing showing = new Showing(
-    new Movie("Spider-Man: No Way Home", Duration.ofMinutes(90), 12.5, 1),
+    new Movie("Spider-Man: No Way Home", Duration.ofMinutes(90), usd(12.5), 1),
     1,
     LocalDateTime.now()
   );
@@ -43,9 +44,9 @@ class ReservationServiceTest {
   @Test
   void shouldCalculateTotalFee() {
     // When
-    double result = reservationService.calculateTotalFee(showing, 3);
+    Money result = reservationService.calculateTotalFee(showing, 3);
     // Then
-    assertEquals(37.5, result);
+    assertEquals(usd(37.5), result);
   }
 
   @Test
@@ -59,7 +60,7 @@ class ReservationServiceTest {
       .customer(customer)
       .showing(showing)
       .audienceCount(3)
-      .totalFee(37.5)
+      .totalFee(usd(37.5))
       .build(), result);
   }
 }
