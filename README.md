@@ -1,4 +1,7 @@
 ## Version history
+### 1.9-SNAPSHOT
+* New requirement: print the movie schedule with simple text & json format
+
 ### 1.8-SNAPSHOT
 * Add Theater configuration
 * Increase unit test code coverage up to 97% (instructions), 83% (branches)

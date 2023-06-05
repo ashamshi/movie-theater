@@ -4,6 +4,8 @@ plugins {
 }
 
 dependencies {
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonDatatypeVersion}"
     implementation "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     testImplementation "org.mockito:mockito-core:${mockitoVersion}"

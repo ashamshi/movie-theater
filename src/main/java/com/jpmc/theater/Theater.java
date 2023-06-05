@@ -11,6 +11,8 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Arrays;
+
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @AllArgsConstructor
 public class Theater {
@@ -31,7 +33,12 @@ public class Theater {
     }
 
     public static void main(String[] args) {
-        Theater theater = new TheaterConfiguration().theater();
+        boolean isPrintToJson = Arrays.stream(args)
+          .anyMatch(arg -> arg.equalsIgnoreCase("json"));
+
+        Theater theater = new TheaterConfiguration()
+          .withPrintToJson(isPrintToJson)
+          .theater();
         theater.printSchedule();
     }
 }

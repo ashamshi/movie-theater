@@ -17,7 +17,7 @@ import java.io.PrintStream;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TheaterConfiguration {
   ScheduleConfiguration scheduleConfiguration = new ScheduleConfiguration();
-  PrintConfiguration printConfiguration = new PrintConfiguration(System.out);
+  PrintConfiguration printConfiguration = new PrintConfiguration();
 
   public Theater theater() {
     Schedule schedule = scheduleConfiguration.schedule();
@@ -28,12 +28,16 @@ public class TheaterConfiguration {
     return new Theater(schedule, reservationService, printService);
   }
 
+  public TheaterConfiguration withPrintToJson(boolean printToJson) {
+    return new TheaterConfiguration(scheduleConfiguration, printConfiguration.withPrintToJson(printToJson));
+  }
+
   TheaterConfiguration withOutputStream(PrintStream out) {
-    return new TheaterConfiguration(this.scheduleConfiguration, printConfiguration.withOutputStream(out));
+    return new TheaterConfiguration(scheduleConfiguration, printConfiguration.withOutputStream(out));
   }
 
   TheaterConfiguration withScheduleLocalDateProvider(LocalDateProvider localDateProvider) {
-    return new TheaterConfiguration(this.scheduleConfiguration.withLocalDateProvider(localDateProvider),
+    return new TheaterConfiguration(scheduleConfiguration.withLocalDateProvider(localDateProvider),
       this.printConfiguration);
   }
 }
