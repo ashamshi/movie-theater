@@ -3,58 +3,50 @@ package com.jpmc.theater.service.discount;
 import com.jpmc.theater.configuration.DiscountConfiguration;
 import com.jpmc.theater.model.Movie;
 import com.jpmc.theater.model.Showing;
+import com.jpmc.theater.service.discount.rule.AmountDiscountRule;
+import com.jpmc.theater.service.discount.rule.DiscountRule;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DiscountServiceTest {
-  DiscountService target = new DiscountService(new DiscountConfiguration().discountRules());
+  Movie spiderMan = new Movie("Spider-Man: No Way Home", Duration.ofMinutes(90), 12.5, 0);
+  Showing showing = new Showing(spiderMan, 5, LocalDateTime.now());
 
   @Test
-  void shouldNotApplyDiscountWhenSpecialCodeDoesNotMatch() {
+  void shouldApplyDiscountWhenMultipleRulesMet() {
     // Given
-    Movie spiderMan = new Movie("Spider-Man: No Way Home", Duration.ofMinutes(90),12.5, 0);
-    Showing showing = new Showing(spiderMan, 5, LocalDateTime.now());
+    List<DiscountRule> rules = List.of(
+      new AmountDiscountRule(showing -> true, 1.0),
+      new AmountDiscountRule(showing -> true, 1.0));
+    DiscountService target = new DiscountService(rules);
     // When & Then
-    assertEquals(12.5, target.calculateTicketPrice(showing));
+    assertEquals(11.5, target.calculateTicketPrice(showing));
   }
 
   @Test
-  void shouldApplyDiscountWhenSpecialCodeMatches() {
+  void shouldNotApplyDiscountWhenSingleRuleMet() {
     // Given
-    Movie spiderMan = new Movie("Spider-Man: No Way Home", Duration.ofMinutes(90),12.5, 1);
-    Showing showing = new Showing(spiderMan, 5, LocalDateTime.now());
+    List<DiscountRule> rules = List.of(
+      new AmountDiscountRule(showing -> true, 1.0),
+      new AmountDiscountRule(showing -> false, 1.0));
+    DiscountService target = new DiscountService(rules);
     // When & Then
-    assertEquals(10, target.calculateTicketPrice(showing));
+    assertEquals(spiderMan.getTicketPrice(), target.calculateTicketPrice(showing));
   }
 
   @Test
-  void shouldApplyDiscountWhenFirstSequence() {
+  void shouldApplyMaximumDiscountWhenMultipleRulesMet() {
     // Given
-    Movie spiderMan = new Movie("Spider-Man: No Way Home", Duration.ofMinutes(90),12.5, 0);
-    Showing showing = new Showing(spiderMan, 1, LocalDateTime.now());
-    // When & Then
-    assertEquals(9.5, target.calculateTicketPrice(showing));
-  }
-
-  @Test
-  void shouldApplyDiscountWhenSecondSequence() {
-    // Given
-    Movie spiderMan = new Movie("Spider-Man: No Way Home", Duration.ofMinutes(90),12.5, 0);
-    Showing showing = new Showing(spiderMan, 2, LocalDateTime.now());
+    List<DiscountRule> rules = List.of(
+      new AmountDiscountRule(showing -> true, 1.0),
+      new AmountDiscountRule(showing -> true, 2.0));
+    DiscountService target = new DiscountService(rules);
     // When & Then
     assertEquals(10.5, target.calculateTicketPrice(showing));
-  }
-
-  @Test
-  void shouldApplyMaxDiscountWhenFirstSequenceAndSpecialCodeMatches() {
-    // Given
-    Movie spiderMan = new Movie("Spider-Man: No Way Home", Duration.ofMinutes(90),12.5, 1);
-    Showing showing = new Showing(spiderMan, 1, LocalDateTime.now());
-    // When & Then
-    assertEquals(9.5, target.calculateTicketPrice(showing));
   }
 }

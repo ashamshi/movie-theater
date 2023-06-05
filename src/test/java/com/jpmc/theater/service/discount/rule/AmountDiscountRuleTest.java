@@ -32,6 +32,6 @@ class AmountDiscountRuleTest {
     // When
     Double result = target.apply(showing);
     // Then
-    assertEquals(0.0, result);
+    assertEquals(0, result);
   }
 }

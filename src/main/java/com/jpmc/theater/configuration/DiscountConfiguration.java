@@ -11,7 +11,12 @@ public class DiscountConfiguration {
     return List.of(
       new FractionDiscountRule(showing -> showing.getMovie().getSpecialCode() == 1, 0.2),
       new AmountDiscountRule(showing -> showing.getSequenceOfTheDay() == 1, 3.0),
-      new AmountDiscountRule(showing -> showing.getSequenceOfTheDay() == 2, 2.0)
-    );
+      new AmountDiscountRule(showing -> showing.getSequenceOfTheDay() == 2, 2.0),
+      new FractionDiscountRule(showing ->
+        showing.getShowStartTime()
+          .isAfter(showing.getShowStartTime().withHour(11).withMinute(0))
+          && showing.getShowStartTime()
+          .isBefore(showing.getShowStartTime().withHour(16).withMinute(0)), 0.25),
+      new AmountDiscountRule(showing -> showing.getShowStartTime().getDayOfMonth() == 7, 1.0));
   }
 }

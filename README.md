@@ -1,4 +1,7 @@
 ## Version history
+### 1.10-SNAPSHOT
+* New requirement: new discount rules
+
 ### 1.9-SNAPSHOT
 * New requirement: print the movie schedule with simple text & json format
 

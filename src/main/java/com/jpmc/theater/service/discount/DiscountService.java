@@ -18,9 +18,14 @@ public class DiscountService {
   }
 
   private double getDiscount(Showing showing) {
-    Double maxDiscount = 0.0;
+    double maxDiscount = 0;
+    int discountsToApply = 0;
     for (DiscountRule rule : discountRules) {
       Double discount = rule.apply(showing);
+
+      if (discount > 0) {
+        discountsToApply++;
+      }
 
       if (discount > maxDiscount) {
         maxDiscount = discount;
@@ -28,6 +33,6 @@ public class DiscountService {
     }
 
     // biggest discount wins
-    return maxDiscount;
+    return discountsToApply > 1 ? maxDiscount : 0;
   }
 }
